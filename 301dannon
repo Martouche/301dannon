@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+##
+## EPITECH PROJECT, 2019
+## 301dannon main project
+## File description:
+## main functions file
+##
+
+import sys, math, traceback
+from math import *
+from sys import stdin
+
+def binomiale(a, b):
+    res = (factorial(a) / (factorial(b) * factorial(a-b)))
+    return (res)
+
+def calcProbabilite(c, check):
+    res = 0
+    ope = 0
+    for x in range(c - check, 5 - check + 1):
+        res = binomiale(5 - check, x)
+        ope += res * pow(1/6, x) * pow(5/6, 5-check-x) * 100
+    return ope
+
+
+def find_occurence(list, index1, index2):
+    tab = []
+    check1 = 0
+    check2 = 0
+    tab.append(check1)
+    tab.append(check2)
+    i = 0
+    while i < len(list):
+        if (list[i] == index1):
+            tab[check1] += 1
+        elif list[i] == index2:
+            tab[check2] += 1
+        i+=1
+    return tab
+
+#remplit la list d'arguments
+#appelle check_last_arg
+def check_args():
+    i = 1
+    list = []
+    check = 0
+    if (len(sys.argv) == 7):
+        while (i < 6):
+            check = check_between1_6(sys.argv[i])
+            if (check == 1):
+                print_error()
+            list.append(sys.argv[i])
+            i += 1
+        list.sort()
+        check_last_arg(sys.argv[6], list)
+    return list
+
+
+def print_error():
+    print("There is an error, I return -1")
+    sys.exit(84)
+
+def print_help():
+    print("USAGE")
+    print("\t./201yams d1 d2 d3 d4 d5 c")
+    print("DESCRIPTION")
+    print("\td1     value of the first die (0 if not thrown)")
+    print("\td2     value of the second die (0 if not thrown)")
+    print("\td3     value of the third die (0 if not thrown)")
+    print("\td4     value of the fourth die (0 if not thrown)")
+    print("\td5     value of the fifth die (0 if not thrown)")
+    print("\tc  expected combination")
+
+def main():
+    print(len(sys.argv))
+    if len(sys.argv) == 2:
+        list = check_args();
+    else:
+        print_help();
+        exit (84)
+    return 0
+
+main()
