@@ -11,74 +11,144 @@ import sys, math, traceback
 from math import *
 from sys import stdin
 
-def binomiale(a, b):
-    res = (factorial(a) / (factorial(b) * factorial(a-b)))
-    return (res)
-
-def calcProbabilite(c, check):
-    res = 0
-    ope = 0
-    for x in range(c - check, 5 - check + 1):
-        res = binomiale(5 - check, x)
-        ope += res * pow(1/6, x) * pow(5/6, 5-check-x) * 100
-    return ope
-
-
-def find_occurence(list, index1, index2):
-    tab = []
-    check1 = 0
-    check2 = 0
-    tab.append(check1)
-    tab.append(check2)
-    i = 0
-    while i < len(list):
-        if (list[i] == index1):
-            tab[check1] += 1
-        elif list[i] == index2:
-            tab[check2] += 1
-        i+=1
-    return tab
-
-#remplit la list d'arguments
-#appelle check_last_arg
-def check_args():
-    i = 1
-    list = []
-    check = 0
-    if (len(sys.argv) == 7):
-        while (i < 6):
-            check = check_between1_6(sys.argv[i])
-            if (check == 1):
-                print_error()
-            list.append(sys.argv[i])
-            i += 1
-        list.sort()
-        check_last_arg(sys.argv[6], list)
-    return list
+def bubble_sort(to_sort):
+    issorted = False
+    length = len(to_sort)
+    cmp = 0
+    for i in range(0, length - 1):
+        for j in range(0, length - i - 1):
+            if to_sort[i] > to_sort[i+1]:
+                issorted = False
+                to_sort[i], to_sort[i + 1] = to_sort[i + 1], to_sort[i]
+            cmp += 1
+    return cmp
 
 
-def print_error():
-    print("There is an error, I return -1")
-    sys.exit(84)
+def select_sort(to_sort):
+    cmp = 0
+    length = len(to_sort)
+    for j in range(0, length - 1):
+        imin = j
+        for i in range(j + 1, length):
+            if to_sort[i] < to_sort[imin]:
+                imin = i
+            cmp += 1
+        if imin != j:
+            to_sort[j], to_sort[imin] = to_sort[imin], to_sort[j]
+    return cmp
 
-def print_help():
-    print("USAGE")
-    print("\t./201yams d1 d2 d3 d4 d5 c")
-    print("DESCRIPTION")
-    print("\td1     value of the first die (0 if not thrown)")
-    print("\td2     value of the second die (0 if not thrown)")
-    print("\td3     value of the third die (0 if not thrown)")
-    print("\td4     value of the fourth die (0 if not thrown)")
-    print("\td5     value of the fifth die (0 if not thrown)")
-    print("\tc  expected combination")
+
+def insertion_sort(to_sort):
+    length = len(to_sort)
+    cmp = 0
+    for i in range(1, length):
+        j = i
+        while j > 0:
+            cmp += 1
+            if to_sort[j - 1] <= to_sort[j]:
+                to_sort[j], to_sort[j - 1] = to_sort[j - 1], to_sort[j]
+                j -= 1
+            else:
+                break
+    #print(to_sort)
+    return cmp
+
+def merge(left, right):
+    res = []
+    cmp = 0
+    while left and right:
+        cmp += 1
+        if left[0] <= right[0]:
+            res.append(left[0])
+            left = left[1:]
+        else:
+            res.append(right[0])
+            right = right[1:]
+    res += left
+    res += right
+    return res, cmp
+
+
+def merge_sort(to_sort):
+    length = len(to_sort)
+    cmp = 0
+    if length <= 1:
+        return to_sort, cmp
+    left = []
+    right = []
+    for i in range(0, length):
+        if i < length // 2:
+            left.append(to_sort[i])
+        else:
+            right.append(to_sort[i])
+    left, tmp = merge_sort(left)
+    cmp += tmp
+    right, tmp = merge_sort(right)
+    cmp += tmp
+    ret, tmp = merge(left, right)
+    cmp += tmp
+    return ret, cmp
+
+
+def quick_sort(to_sort):
+    length = len(to_sort)
+    cmp = 0
+    if length <= 1:
+        return to_sort, cmp
+    pivot = to_sort[0]
+    left, right, equal = [], [], [pivot]
+    for i in range(1, length):
+        cmp += 1
+        if to_sort[i] >= pivot:
+            left.append(to_sort[i])
+        else:
+            right.append(to_sort[i])
+    rl = quick_sort(left)
+    rr = quick_sort(right)
+    to_sort = rl[0] + equal + rr[0]
+    cmp += rl[1] + rr[1]
+    return to_sort, cmp
+
+
+def handle_args():
+    if len(sys.argv) != 2:
+        sys.exit(84)
+    if sys.argv[1] == "-h":
+        print("USAGE\n\t\t./301dannon file\n\nDESCRIPTION\n\t\tfile\tfile that contains the numbers to be sorted, seperated by spaces")
+        return
+
+def print_sections(to_sort):
+    if len(to_sort) <= 1:
+        print("{} element".format(len(to_sort)))
+    else:
+        print("{} elements".format(len(to_sort)))
+    c = select_sort(to_sort[::])
+    print("Selection sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    c = insertion_sort(to_sort[::])
+    print("Insertion sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    c= bubble_sort(to_sort[::])
+    print("Bubble sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    c= quick_sort(to_sort[::])[1]
+    print("Quicksort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    c= merge_sort(to_sort[::])[1]
+    print("Merge sort: {} comparison".format(c) + ("s" if c > 1 else ""))
 
 def main():
-    print(len(sys.argv))
-    if len(sys.argv) == 2:
-        list = check_args();
-    else:
-        print_help();
-        exit (84)
-    return 0
+    handle_args()
+    to_sort = []
+    f = open(sys.argv[1], "r")
+    text = f.read().strip().replace("\t", " ").replace('\n', " ")
+    text = ' '.join(text.split(" "))
+    spl = text.split(" ")
+    is_nbr = True
+    try:
+        a = list(map(float, spl))
+    except ValueError:
+        is_nbr = False
+    for elem in spl:
+        if len(elem) > 0:
+                to_sort.append(float(elem) if is_nbr else elem)
+    f.close()
+    print_sections(to_sort)
 
 main()
