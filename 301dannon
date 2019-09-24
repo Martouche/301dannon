@@ -128,13 +128,13 @@ def print_sections(to_sort):
     else:
         print("Selection sort: {} comparison".format(c))
     c = insertion_sort(to_sort[::])
-    print("Insertion sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    print("Insertion sort: {} comparison".format(c) + ("s" if c != 1 else ""))
     c= bubble_sort(to_sort[::])
-    print("Bubble sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    print("Bubble sort: {} comparison".format(c) + ("s" if c != 1 else ""))
     c= quick_sort(to_sort[::])[1]
-    print("Quicksort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    print("Quicksort: {} comparison".format(c) + ("s" if c != 1 else ""))
     c= merge_sort(to_sort[::])[1]
-    print("Merge sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    print("Merge sort: {} comparison".format(c) + ("s" if c != 1 else ""))
 
 def main():
     handle_args()
