@@ -148,6 +148,7 @@ def main():
         a = list(map(float, spl))
     except ValueError:
         is_nbr = False
+        exit(84)
     for elem in spl:
         if len(elem) > 0:
                 to_sort.append(float(elem) if is_nbr else elem)
