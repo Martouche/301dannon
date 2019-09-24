@@ -123,8 +123,7 @@ def print_sections(to_sort):
     else:
         print("{} elements".format(len(to_sort)))
     c = select_sort(to_sort[::])
-    print(c)
-    if c > 0:
+    if int(c) > 0:
         print("Selection sort: {} comparisons".format(c))
     else:
         print("Selection sort: {} comparison".format(c))
