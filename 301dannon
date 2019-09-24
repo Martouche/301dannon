@@ -136,7 +136,10 @@ def print_sections(to_sort):
 def main():
     handle_args()
     to_sort = []
-    f = open(sys.argv[1], "r")
+    try :
+        f = open(sys.argv[1], "r")
+    except :
+        exit(84)
     text = f.read().strip().replace("\t", " ").replace('\n', " ")
     text = ' '.join(text.split(" "))
     spl = text.split(" ")
