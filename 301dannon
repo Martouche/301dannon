@@ -123,7 +123,10 @@ def print_sections(to_sort):
     else:
         print("{} elements".format(len(to_sort)))
     c = select_sort(to_sort[::])
-    print("Selection sort: {} comparison".format(c) + ("s" if c > 1 else ""))
+    if c > 1:
+        print("Selection sort: {} comparisons".format(c))
+    else:
+        print("Selection sort: {} comparison".format(c))
     c = insertion_sort(to_sort[::])
     print("Insertion sort: {} comparison".format(c) + ("s" if c > 1 else ""))
     c= bubble_sort(to_sort[::])
